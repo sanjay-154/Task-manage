@@ -1,0 +1,165 @@
+/* import { useEffect, useState } from "react";
+import axios from "axios";
+
+import Header from "./header";
+import Form from "./todoform";
+import List from "./todolist";
+import Stat from "./todostat";
+import "./App.css";
+
+const API_URL = "http://localhost:5000/api/todos";
+
+export default function App() {
+  const [todos, setTodos] = useState([]);
+  const [message, setMessage] = useState("Loading Tasks...");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalTodos, setTotalTodos] = useState(0);
+  const [showTodos, setShowTodos] = useState(false);
+
+  const fetchTodos = async (page = currentPage) => {
+    try {
+      const response = await axios.get(API_URL, {
+        params: { page },
+      });
+      const result = response.data.return;
+      setTodos(result.todos);
+      setCurrentPage(result.currentPage);
+      setTotalPages(result.totalPages);
+      setTotalTodos(result.totalTodos);
+      setMessage("");
+    } catch (error) {
+      console.error(error);
+      setMessage("Failed to load tasks. Check your backend.");
+    }
+  };
+
+  useEffect(() => {
+    if (showTodos) {
+      fetchTodos(currentPage);
+    }
+  }, [currentPage,showTodos]);
+
+  const addTask = async (title, description) => {
+    try {
+      await axios.post(API_URL, {
+        title,
+        description,
+      });
+      setCurrentPage(1);
+      await fetchTodos(1);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to add task");
+    }
+  };
+
+  const toggleTask = async (id, completed) => {
+    try {
+      const response = await axios.put(`${API_URL}/${id}`, {
+        completed: !completed,
+      });
+
+      setTodos((prev) =>
+        prev.map((todo) => (todo.id === id ? response.data.data : todo)),
+      );
+    } catch (error) {
+      console.error(error);
+      alert("Failed to update task status");
+    }
+  };
+
+  const editTask = async (id, title, description) => {
+    try {
+      const response = await axios.put(`${API_URL}/${id}`, {
+        title,
+        description,
+      });
+
+      setTodos((prev) =>
+        prev.map((todo) => (todo.id === id ? response.data.data : todo)),
+      );
+    } catch (error) {
+      console.error(error);
+      alert("Failed to edit task");
+    }
+  };
+
+  const deleteTask = async (id) => {
+    try {
+      await axios.delete(`${API_URL}/${id}`);
+
+      const remainingTotal = totalTodos - 1;
+      const newTotalPages = Math.ceil(remainingTotal / 5);
+
+      const pageToFetch = Math.min(currentPage, Math.max(1, newTotalPages));
+
+      setCurrentPage(pageToFetch);
+      await fetchTodos(pageToFetch);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete task");
+    }
+  };
+
+  const completed = todos.filter((todo) => todo.completed).length;
+
+  return (
+    <main className="max-w-lg mx-auto border rounded px-5 bg-amber-50 mt-3 mb-3">
+      <Header />
+
+      {message && <p className="my-3 text-center">{message}</p>}
+
+      <Form onAddTask={addTask} />
+
+      <Stat
+        total={totalTodos}
+        completed={completed}
+        pending={totalTodos - completed}
+      />
+
+      <button
+        onClick={() => {
+          setShowTodos((prev)=>!prev);
+        }}
+        className="border rounded px-3 py-2 mb-4 bg-white"
+      >
+        {showTodos?"Hide Todos":"Load Todos"}
+       
+      </button>
+
+      {showTodos && (
+        <List
+          todos={todos}
+          onToggleComplete={toggleTask}
+          onEditTask={editTask}
+          onDeleteTask={deleteTask}
+        />
+      )}
+
+      {showTodos && totalPages > 1 && (
+        <div className="flex justify-center items-center gap-4 mb-4">
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+            className="border rounded px-3 py-2 disabled:opacity-50"
+          >
+            Previous
+          </button>
+
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            className="border rounded px-3 py-2 disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      )}
+    </main>
+  );
+} */
